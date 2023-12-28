@@ -1,0 +1,15 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: blueviolet;
+}
+
+:root {
+  --red: #9c1e01;
+  --orange: #dd3f00;
+  --green: #bdcf3b;
+  --yellow: #f4ec5d;
+  --light-pink: #ed82de;
+  --pink: #cc2da2;
+}
