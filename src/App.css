@@ -1,15 +1,20 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  background-color: blueviolet;
-}
-
 :root {
-  --red: #9c1e01;
+  --petrol: #001e25;
   --orange: #dd3f00;
   --green: #bdcf3b;
   --yellow: #f4ec5d;
   --light-pink: #ed82de;
   --pink: #cc2da2;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: var(--petrol);
+  color: var(--pink);
+}
+
+div {
+  padding: 1em;
 }
