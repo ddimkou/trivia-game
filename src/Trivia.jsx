@@ -1,22 +1,27 @@
-// import { fetchQuestions } from "./api";
-import { useState } from "react";
-import { questionsFile } from "./questions";
+import { fetchQuestions } from "./api";
+import { useState, useEffect } from "react";
 
 const Trivia = () => {
-  const [questions, setQuestions] = useState(questionsFile);
+  const [questions, setQuestions] = useState("");
   const [count, setCount] = useState(0);
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const data = await fetchQuestions();
-  //       setQuestions(data);
-  //       console.log(data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await fetchQuestions();
+        setQuestions(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  // waiting for fetched data
+  if (!questions.length) {
+    return <p>Loading...</p>;
+  }
+
+  //success
 
   const correctAnswer = questions[count].correct_answer;
   const incorrectAnswers = questions[count].incorrect_answers;
@@ -31,14 +36,14 @@ const Trivia = () => {
 
   const checkAnswer = (e) => {
     const textContent = e.target.textContent;
-    // console.log(textContent);
+
     textContent === correctAnswer
       ? setCount(count + 1)
       : console.log("try again");
   };
   return (
     <div className="game">
-      {count < 2 ? (
+      {count < 10 ? (
         <>
           <h1>Question: {count + 1} out of 10</h1>
           <h2>{questions[count].question}</h2>
