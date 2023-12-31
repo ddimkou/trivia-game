@@ -1,9 +1,13 @@
 import axios from "axios";
 
-const fetchQuestions = async () => {
+const validDifficulties = ["easy", "medium", "hard"];
+const fetchQuestions = async (difficulty) => {
+  if (!validDifficulties.includes(difficulty)) {
+    throw new Error("Invalid difficulty level");
+  }
   try {
     const response = await axios.get(
-      "https://opentdb.com/api.php?amount=10&type=multiple"
+      `https://opentdb.com/api.php?amount=10&difficulty=${difficulty}&type=multiple`
     );
     return response.data.results;
   } catch (error) {
