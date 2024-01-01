@@ -1,6 +1,8 @@
+/* eslint-disable react/prop-types */
 import { fetchQuestions } from "./api";
 import { useState, useEffect } from "react";
 import he from "he";
+import Menu from "./Menu";
 
 // decoder
 const decodeEntities = (text) => he.decode(text);
@@ -54,16 +56,18 @@ const Trivia = ({ difficulty }) => {
   };
   return (
     <div className="game">
-      <h1>Question: {count + 1} out of 10</h1>
-      <h2 dangerouslySetInnerHTML={{ __html: decodedQuestion }}></h2>
-      <ul>
-        {shuffledOptions.map((shuffleOption, key) => (
-          <li key={key} className="button" onClick={checkAnswer}>
-            {shuffleOption}
-          </li>
-        ))}
-      </ul>
-      <p>Correct answer: {correctAnswer}</p>
+      <Menu count={count} />
+      <>
+        <h2 dangerouslySetInnerHTML={{ __html: decodedQuestion }}></h2>
+        <ul>
+          {shuffledOptions.map((shuffleOption, key) => (
+            <li key={key} className="button" onClick={checkAnswer}>
+              {shuffleOption}
+            </li>
+          ))}
+        </ul>
+        <p>Correct answer: {correctAnswer}</p>
+      </>
     </div>
   );
 };
