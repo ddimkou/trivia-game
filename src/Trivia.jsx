@@ -1,96 +1,87 @@
 /* eslint-disable react/prop-types */
-import { fetchQuestions } from "./api";
 import { useState, useEffect } from "react";
 import he from "he";
 import Menu from "./Menu";
+import { fetchQuestions } from "./api";
 
-// decoder
+// Decoder
 const decodeEntities = (text) => he.decode(text);
 
-// rafce
 const Trivia = ({ difficulty, score, setScore }) => {
   const [questions, setQuestions] = useState([]);
   const [count, setCount] = useState(0);
+  const [shuffledOptions, setShuffledOptions] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Fetch questions
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       try {
         const data = await fetchQuestions(difficulty);
         setQuestions(data);
       } catch (error) {
         console.log(error);
       }
+      setIsLoading(false);
     };
     fetchData();
   }, [difficulty]);
 
-  // score multiplier
+  // Shuffle options
+  useEffect(() => {
+    if (questions.length > 0 && count < questions.length) {
+      const correctAnswer = decodeEntities(questions[count].correct_answer);
+      const incorrectAnswers =
+        questions[count].incorrect_answers.map(decodeEntities);
+      const options = [...incorrectAnswers, correctAnswer];
+      const shuffle = (options) => options.sort(() => Math.random() - 0.5);
+      setShuffledOptions(shuffle(options));
+    }
+  }, [count, questions]);
 
-  const getScoreMultiplier = (difficulty) => {
-    switch (difficulty) {
-      case "easy":
-        return 10;
-      case "medium":
-        return 15;
-      case "hard":
-        return 25;
-      default:
-        return 0;
+  // Check answer
+  const checkAnswer = (e) => {
+    const textContent = e.target.textContent;
+    if (questions.length > 0 && count < questions.length) {
+      const correctAnswer = decodeEntities(questions[count].correct_answer);
+      if (textContent === correctAnswer) {
+        setCount((prevCount) => prevCount + 1);
+        setScore((prevScore) => prevScore + 10);
+      } else {
+        setScore((prevScore) => prevScore - 5);
+      }
     }
   };
-  const scoreMultiplier = getScoreMultiplier(difficulty);
 
-  // waiting for fetched data
-  if (questions.length === 0) {
+  // Waiting for fetched data
+  if (isLoading) {
     return <p>Loading...</p>;
   }
 
-  // finished
+  // Game finished
   if (count >= questions.length) {
-    return <div>yay</div>;
+    return <div>Yay</div>;
   }
 
-  //fetch success. game on
+  // Current question and answer
+  const currentQuestion = questions[count];
+  const decodedQuestion = decodeEntities(currentQuestion.question);
+  const correctAnswer = decodeEntities(currentQuestion.correct_answer);
 
-  const decodedQuestion = decodeEntities(questions[count].question);
-  const correctAnswer = decodeEntities(questions[count].correct_answer);
-  const incorrectAnswers =
-    questions[count].incorrect_answers.map(decodeEntities);
-  const options = [...incorrectAnswers, correctAnswer];
-
-  // shuffle with sort
-  // https://www.freecodecamp.org/news/how-to-shuffle-an-array-of-items-using-javascript-or-typescript/
-  const shuffle = (options) => {
-    return options.sort(() => Math.random() - 0.5);
-  };
-  const shuffledOptions = shuffle(options);
-
-  // check answer
-  const checkAnswer = (e) => {
-    const textContent = e.target.textContent;
-
-    if (textContent === correctAnswer) {
-      setCount((prevCount) => prevCount + 1);
-      setScore((prevScore) => prevScore + scoreMultiplier);
-    } else {
-      console.log("try again");
-      setScore((prevScore) => prevScore - 5);
-    }
-  };
-
+  // Game on
   return (
     <div className="game">
       <Menu count={count} score={score} setScore={setScore} />
-      <>
-        <h2 dangerouslySetInnerHTML={{ __html: decodedQuestion }}></h2>
-        <ul>
-          {shuffledOptions.map((shuffleOption, key) => (
-            <li key={key} className="button" onClick={checkAnswer}>
-              {shuffleOption}
-            </li>
-          ))}
-        </ul>
-        <p>Correct answer: {correctAnswer}</p>
-      </>
+      <h2 dangerouslySetInnerHTML={{ __html: decodedQuestion }}></h2>
+      <ul>
+        {shuffledOptions.map((option, key) => (
+          <li key={key} className="button" onClick={checkAnswer}>
+            {option}
+          </li>
+        ))}
+      </ul>
+      <p>Correct answer: {correctAnswer}</p>
     </div>
   );
 };
