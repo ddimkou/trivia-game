@@ -7,7 +7,8 @@ import Menu from "./Menu";
 // decoder
 const decodeEntities = (text) => he.decode(text);
 
-const Trivia = ({ difficulty }) => {
+// rafce
+const Trivia = ({ difficulty, score, setScore }) => {
   const [questions, setQuestions] = useState([]);
   const [count, setCount] = useState(0);
   useEffect(() => {
@@ -21,6 +22,22 @@ const Trivia = ({ difficulty }) => {
     };
     fetchData();
   }, [difficulty]);
+
+  // score multiplier
+
+  const getScoreMultiplier = (difficulty) => {
+    switch (difficulty) {
+      case "easy":
+        return 10;
+      case "medium":
+        return 15;
+      case "hard":
+        return 25;
+      default:
+        return 0;
+    }
+  };
+  const scoreMultiplier = getScoreMultiplier(difficulty);
 
   // waiting for fetched data
   if (questions.length === 0) {
@@ -47,16 +64,22 @@ const Trivia = ({ difficulty }) => {
   };
   const shuffledOptions = shuffle(options);
 
+  // check answer
   const checkAnswer = (e) => {
     const textContent = e.target.textContent;
 
-    textContent === correctAnswer
-      ? setCount((prevCount) => prevCount + 1)
-      : console.log("try again");
+    if (textContent === correctAnswer) {
+      setCount((prevCount) => prevCount + 1);
+      setScore((prevScore) => prevScore + scoreMultiplier);
+    } else {
+      console.log("try again");
+      setScore((prevScore) => prevScore - 5);
+    }
   };
+
   return (
     <div className="game">
-      <Menu count={count} />
+      <Menu count={count} score={score} setScore={setScore} />
       <>
         <h2 dangerouslySetInnerHTML={{ __html: decodedQuestion }}></h2>
         <ul>

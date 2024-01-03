@@ -5,6 +5,7 @@ import Trivia from "./Trivia";
 
 const App = () => {
   const [difficulty, setDifficulty] = useState("");
+  const [score, setScore] = useState(0);
   return (
     <>
       {difficulty.length <= 0 ? (
@@ -13,7 +14,7 @@ const App = () => {
         </>
       ) : (
         <>
-          <Trivia difficulty={difficulty} />
+          <Trivia difficulty={difficulty} score={score} setScore={setScore} />
         </>
       )}
     </>

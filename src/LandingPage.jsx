@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 const LandingPage = ({ setDifficulty }) => {
   const HandleDifficulty = (e) => {
     setDifficulty(e.target.textContent);
