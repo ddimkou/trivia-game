@@ -14,6 +14,7 @@ const Trivia = ({ difficulty, score, setScore }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [hintUsed, setHintUsed] = useState(false);
   const [incorrectAnswers, setIncorrectAnswers] = useState([]);
+  const [selectedOptions, setSelectedOptions] = useState([]);
 
   // Fetch questions
   useEffect(() => {
@@ -55,6 +56,7 @@ const Trivia = ({ difficulty, score, setScore }) => {
   // Check answer
   const checkAnswer = (e) => {
     const textContent = e.target.textContent;
+    setSelectedOptions((prevOptions) => [...prevOptions, textContent]);
     if (questions.length > 0 && count < questions.length) {
       const correctAnswer = decodeEntities(questions[count].correct_answer);
       if (textContent === correctAnswer) {
@@ -106,6 +108,10 @@ const Trivia = ({ difficulty, score, setScore }) => {
               !incorrectAnswers.includes(option)
                 ? "disabled"
                 : ""
+            } ${
+              selectedOptions.includes(option) && option !== correctAnswer
+                ? "disabled"
+                : ""
             }`}
             onClick={checkAnswer}
           >
@@ -117,5 +123,4 @@ const Trivia = ({ difficulty, score, setScore }) => {
     </div>
   );
 };
-
 export default Trivia;
