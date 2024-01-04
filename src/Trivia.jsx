@@ -12,6 +12,8 @@ const Trivia = ({ difficulty, score, setScore }) => {
   const [count, setCount] = useState(0);
   const [shuffledOptions, setShuffledOptions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [hintUsed, setHintUsed] = useState(false);
+  const [incorrectAnswers, setIncorrectAnswers] = useState([]);
 
   // Fetch questions
   useEffect(() => {
@@ -28,17 +30,27 @@ const Trivia = ({ difficulty, score, setScore }) => {
     fetchData();
   }, [difficulty]);
 
-  // Shuffle options
+  // Shuffle options and apply hint logic
   useEffect(() => {
     if (questions.length > 0 && count < questions.length) {
       const correctAnswer = decodeEntities(questions[count].correct_answer);
-      const incorrectAnswers =
+      const decodedIncorrectAnswers =
         questions[count].incorrect_answers.map(decodeEntities);
-      const options = [...incorrectAnswers, correctAnswer];
+      setIncorrectAnswers(decodedIncorrectAnswers);
+      let options = [...decodedIncorrectAnswers, correctAnswer];
       const shuffle = (options) => options.sort(() => Math.random() - 0.5);
-      setShuffledOptions(shuffle(options));
+      options = shuffle(options);
+
+      if (hintUsed) {
+        const incorrectIndex = Math.floor(
+          Math.random() * decodedIncorrectAnswers.length
+        );
+        options = [correctAnswer, decodedIncorrectAnswers[incorrectIndex]];
+      }
+
+      setShuffledOptions(options);
     }
-  }, [count, questions]);
+  }, [count, questions, hintUsed]);
 
   // Check answer
   const checkAnswer = (e) => {
@@ -51,6 +63,16 @@ const Trivia = ({ difficulty, score, setScore }) => {
       } else {
         setScore((prevScore) => prevScore - 5);
       }
+      // Reset hint for next question
+      setHintUsed(false);
+    }
+  };
+
+  // Hint functionality
+  const useHint = () => {
+    if (!hintUsed && questions.length > 0 && count < questions.length) {
+      setHintUsed(true);
+      setScore((prevScore) => prevScore - 5);
     }
   };
 
@@ -72,11 +94,21 @@ const Trivia = ({ difficulty, score, setScore }) => {
   // Game on
   return (
     <div className="game">
-      <Menu count={count} score={score} setScore={setScore} />
+      <Menu count={count} score={score} setScore={setScore} useHint={useHint} />
       <h2 dangerouslySetInnerHTML={{ __html: decodedQuestion }}></h2>
       <ul>
         {shuffledOptions.map((option, key) => (
-          <li key={key} className="button" onClick={checkAnswer}>
+          <li
+            key={key}
+            className={`button ${
+              hintUsed &&
+              option !== correctAnswer &&
+              !incorrectAnswers.includes(option)
+                ? "disabled"
+                : ""
+            }`}
+            onClick={checkAnswer}
+          >
             {option}
           </li>
         ))}
