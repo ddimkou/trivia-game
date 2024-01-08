@@ -6,6 +6,8 @@ import { fetchQuestions } from "./api";
 
 // Decoder
 const decodeEntities = (text) => he.decode(text);
+// 429 error delay
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const Trivia = ({ difficulty, score, setScore }) => {
   const [questions, setQuestions] = useState([]);
@@ -16,21 +18,36 @@ const Trivia = ({ difficulty, score, setScore }) => {
   const [incorrectAnswers, setIncorrectAnswers] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
 
-  // Fetch questions
+  // Fetch questions / if 429: delay 5sec
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      try {
-        const data = await fetchQuestions(difficulty);
-        setQuestions(data);
-      } catch (error) {
-        console.log(error);
+      let retryCount = 0;
+      const maxRetries = 3;
+      const retryDelay = 5000;
+
+      while (retryCount < maxRetries) {
+        try {
+          const data = await fetchQuestions(difficulty);
+          setQuestions(data);
+          break; //success? done
+        } catch (error) {
+          if (error.response && error.response.status === 429) {
+            retryCount++;
+            console.log(`Retry attempt ${retryCount}`);
+            await delay(retryDelay); // wait for retryDelay ms
+          } else {
+            console.log("Error fetching questions:", error);
+            break;
+          }
+        }
       }
       setIsLoading(false);
     };
+
     fetchData();
   }, [difficulty]);
-
   // Shuffle options and apply hint logic
   useEffect(() => {
     if (questions.length > 0 && count < questions.length) {
