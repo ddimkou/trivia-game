@@ -100,3 +100,12 @@ p {
   background-color: grey;
   cursor: not-allowed;
 }
+
+/* endgame */
+
+.endGame h3 {
+  text-align: center;
+}
+.endGame button {
+  margin-top: 2em;
+}

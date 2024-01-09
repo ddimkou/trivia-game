@@ -1,8 +1,17 @@
 /* eslint-disable react/prop-types */
+import { useEffect } from "react";
+import { startConfetti } from "./confetti";
+
 const EndGame = ({ difficulty, score }) => {
   const tryAgain = () => {
     window.location.reload(false);
   };
+
+  //   confetti effect
+  useEffect(() => {
+    startConfetti();
+  }, []);
+
   return (
     <div className="endGame">
       <h3>
