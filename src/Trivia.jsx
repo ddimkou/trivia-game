@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import he from "he";
 import Menu from "./Menu";
 import { fetchQuestions } from "./api";
+import EndGame from "./EndGame";
 
 // Decoder
 const decodeEntities = (text) => he.decode(text);
@@ -31,7 +32,7 @@ const Trivia = ({ difficulty, score, setScore }) => {
         try {
           const data = await fetchQuestions(difficulty);
           setQuestions(data);
-          break; //success? done
+          break; //happy path
         } catch (error) {
           if (error.response && error.response.status === 429) {
             retryCount++;
@@ -102,7 +103,7 @@ const Trivia = ({ difficulty, score, setScore }) => {
 
   // Game finished
   if (count >= questions.length) {
-    return <div>Yay</div>;
+    return <EndGame difficulty={difficulty} score={score} />;
   }
 
   // Current question and answer
