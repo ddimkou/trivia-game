@@ -3,6 +3,7 @@ const LandingPage = ({ setDifficulty }) => {
   const HandleDifficulty = (e) => {
     setDifficulty(e.target.textContent);
   };
+
   return (
     <div className="landing-page">
       <h2>Select Your Difficulty</h2>
@@ -17,6 +18,19 @@ const LandingPage = ({ setDifficulty }) => {
           hard
         </li>
       </ul>
+      <div className="game-rules">
+        <h3>How to Play</h3>
+        <p>Welcome to the trivia game!</p>
+        <ul>
+          <li>Select a difficulty to start the game.</li>
+          <li>Answer each question to the best of your ability.</li>
+          <li>
+            Use hints if you are stuck, but be careful - they cost points!
+          </li>
+          <li>Your score will be calculated based on correct answers.</li>
+          <li>Try to achieve the highest score possible!</li>
+        </ul>
+      </div>
     </div>
   );
 };
