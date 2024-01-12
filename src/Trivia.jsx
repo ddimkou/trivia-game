@@ -4,6 +4,7 @@ import he from "he";
 import Menu from "./Menu";
 import { fetchQuestions } from "./api";
 import EndGame from "./EndGame";
+import BeatLoader from "react-spinners/BeatLoader";
 
 // Decoder
 const decodeEntities = (text) => he.decode(text);
@@ -98,7 +99,11 @@ const Trivia = ({ difficulty, score, setScore }) => {
 
   // Waiting for fetched data
   if (isLoading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="spinner-container">
+        <BeatLoader color="#dd3f00" size={25} />
+      </div>
+    );
   }
 
   // Game finished
@@ -137,7 +142,7 @@ const Trivia = ({ difficulty, score, setScore }) => {
           </li>
         ))}
       </ul>
-      <p>Correct answer: {correctAnswer}</p>
+      {/* <p>Correct answer: {correctAnswer}</p> */}
     </div>
   );
 };

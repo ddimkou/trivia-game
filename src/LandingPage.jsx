@@ -4,7 +4,7 @@ const LandingPage = ({ setDifficulty }) => {
     setDifficulty(e.target.textContent);
   };
   return (
-    <>
+    <div className="landing-page">
       <h2>Select Your Difficulty</h2>
       <ul>
         <li className="button" onClick={HandleDifficulty}>
@@ -17,7 +17,7 @@ const LandingPage = ({ setDifficulty }) => {
           hard
         </li>
       </ul>
-    </>
+    </div>
   );
 };
 
