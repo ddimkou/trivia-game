@@ -15,7 +15,9 @@ Briefly describe what your Trivia Game Application does. Include the main featur
 
 ## Technologies
 
-List the technologies and frameworks used (e.g., React, `he` library for HTML entity decoding).
+- `he` library for HTML entity decoding.
+- `axios` fetch from [triviaAPI](https://opentdb.com/)
+- [canvas-confetti](https://www.npmjs.com/package/canvas-confetti)
 
 ## Installation and Setup
 
