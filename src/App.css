@@ -143,13 +143,42 @@ body {
 }
 
 /* Game */
+
+/* border effect https://dev.to/chokcoco/fantastic-css-border-animation-5166*/
+
 .game {
-  padding: 1em;
+  position: relative;
+  padding: 3em;
   text-align: center;
-  border: 2px solid var(--orange);
-  border-radius: 20px;
+  border-radius: 2px;
   width: 500px;
   background-color: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.game::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 4px solid transparent;
+  border-image: linear-gradient(45deg, var(--orange), var(--light-pink)) 1;
+  border-image-slice: 1;
+  border-radius: 5px;
+  clip-path: inset(0px round 10px);
+  animation: huerotate 6s infinite linear;
+  filter: hue-rotate(360deg);
+  z-index: -1;
+}
+@keyframes huerotate {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
 }
 
 h2 {
@@ -197,6 +226,7 @@ p {
   .game {
     width: 95%;
     margin: 0 auto;
+    padding: 0.6em;
   }
 
   h2 {

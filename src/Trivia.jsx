@@ -119,30 +119,37 @@ const Trivia = ({ difficulty, score, setScore }) => {
   // Game on
   return (
     <div className="game">
-      <Menu count={count} score={score} setScore={setScore} useHint={useHint} />
-      <h2 dangerouslySetInnerHTML={{ __html: decodedQuestion }}></h2>
-      <ul>
-        {shuffledOptions.map((option, key) => (
-          <li
-            key={key}
-            className={`button ${
-              hintUsed &&
-              option !== correctAnswer &&
-              !incorrectAnswers.includes(option)
-                ? "disabled"
-                : ""
-            } ${
-              selectedOptions.includes(option) && option !== correctAnswer
-                ? "disabled"
-                : ""
-            }`}
-            onClick={checkAnswer}
-          >
-            {option}
-          </li>
-        ))}
-      </ul>
-      {/* <p>Correct answer: {correctAnswer}</p> */}
+      <div className="game-content">
+        <Menu
+          count={count}
+          score={score}
+          setScore={setScore}
+          useHint={useHint}
+        />
+        <h2 dangerouslySetInnerHTML={{ __html: decodedQuestion }}></h2>
+        <ul>
+          {shuffledOptions.map((option, key) => (
+            <li
+              key={key}
+              className={`button ${
+                hintUsed &&
+                option !== correctAnswer &&
+                !incorrectAnswers.includes(option)
+                  ? "disabled"
+                  : ""
+              } ${
+                selectedOptions.includes(option) && option !== correctAnswer
+                  ? "disabled"
+                  : ""
+              }`}
+              onClick={checkAnswer}
+            >
+              {option}
+            </li>
+          ))}
+        </ul>
+        {/* <p>Correct answer: {correctAnswer}</p> */}
+      </div>
     </div>
   );
 };
