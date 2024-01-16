@@ -50,6 +50,7 @@ const Trivia = ({ difficulty, score, setScore }) => {
 
     fetchData();
   }, [difficulty]);
+
   // Shuffle options and apply hint logic
   useEffect(() => {
     if (questions.length > 0 && count < questions.length) {
@@ -57,15 +58,20 @@ const Trivia = ({ difficulty, score, setScore }) => {
       const decodedIncorrectAnswers =
         questions[count].incorrect_answers.map(decodeEntities);
       setIncorrectAnswers(decodedIncorrectAnswers);
+
       let options = [...decodedIncorrectAnswers, correctAnswer];
+
+      // Shuffle options
       const shuffle = (options) => options.sort(() => Math.random() - 0.5);
-      options = shuffle(options);
 
       if (hintUsed) {
         const incorrectIndex = Math.floor(
           Math.random() * decodedIncorrectAnswers.length
         );
         options = [correctAnswer, decodedIncorrectAnswers[incorrectIndex]];
+        options = shuffle(options); // shuffle after hint
+      } else {
+        options = shuffle(options); // shuffle normally
       }
 
       setShuffledOptions(options);
