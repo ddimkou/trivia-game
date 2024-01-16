@@ -75,6 +75,11 @@ const Trivia = ({ difficulty, score, setScore }) => {
   // Check answer
   const checkAnswer = (e) => {
     const textContent = e.target.textContent;
+    // if selected incorrect option clicked, its unclickable
+    if (selectedOptions.includes(textContent)) {
+      return;
+    }
+
     setSelectedOptions((prevOptions) => [...prevOptions, textContent]);
     if (questions.length > 0 && count < questions.length) {
       const correctAnswer = decodeEntities(questions[count].correct_answer);
