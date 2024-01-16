@@ -5,6 +5,7 @@ import Menu from "./Menu";
 import { fetchQuestions } from "./api";
 import EndGame from "./EndGame";
 import BeatLoader from "react-spinners/BeatLoader";
+import { triggerConfetti } from "./confetti";
 
 // Decoder
 const decodeEntities = (text) => he.decode(text);
@@ -90,6 +91,7 @@ const Trivia = ({ difficulty, score, setScore }) => {
     if (questions.length > 0 && count < questions.length) {
       const correctAnswer = decodeEntities(questions[count].correct_answer);
       if (textContent === correctAnswer) {
+        triggerConfetti();
         setCount((prevCount) => prevCount + 1);
         setScore((prevScore) => prevScore + 10);
         // Reset hint for next question

@@ -1,5 +1,6 @@
 import confetti from "canvas-confetti";
 
+// endgame confetti
 function startConfetti() {
   var duration = 15 * 1000;
   var animationEnd = Date.now() + duration;
@@ -30,4 +31,19 @@ function startConfetti() {
   }, 250);
 }
 
-export { startConfetti };
+// small confetti
+const triggerConfetti = () => {
+  confetti({
+    angle: 90,
+    spread: 360,
+    startVelocity: 30,
+    elementCount: 100,
+    dragFriction: 0.12,
+    duration: 1500,
+    stagger: 3,
+    width: "10px",
+    height: "10px",
+    colors: ["#bb0000", "#ffffff", "#ff0000", "#00ff00", "#0000ff", "#ffff00"],
+  });
+};
+export { startConfetti, triggerConfetti };
