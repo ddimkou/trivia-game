@@ -161,7 +161,7 @@ const Trivia = ({ difficulty, score, setScore }) => {
             </li>
           ))}
         </ul>
-        <p>Correct answer: {correctAnswer}</p>
+        {/* <p>Correct answer: {correctAnswer}</p> */}
       </div>
     </div>
   );

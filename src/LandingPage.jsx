@@ -15,7 +15,7 @@ const LandingPage = ({ setDifficulty }) => {
   return (
     <div className="landing-page">
       <h2>Select Your Difficulty</h2>
-      <ul>
+      <ul className="modes">
         <li className="button" onClick={HandleDifficulty}>
           easy
         </li>
