@@ -81,11 +81,11 @@ const Trivia = ({ difficulty, score, setScore }) => {
       if (textContent === correctAnswer) {
         setCount((prevCount) => prevCount + 1);
         setScore((prevScore) => prevScore + 10);
+        // Reset hint for next question
+        setHintUsed(false);
       } else {
         setScore((prevScore) => prevScore - 5);
       }
-      // Reset hint for next question
-      setHintUsed(false);
     }
   };
 
@@ -148,7 +148,7 @@ const Trivia = ({ difficulty, score, setScore }) => {
             </li>
           ))}
         </ul>
-        {/* <p>Correct answer: {correctAnswer}</p> */}
+        <p>Correct answer: {correctAnswer}</p>
       </div>
     </div>
   );
