@@ -25,3 +25,5 @@ This project was bootstrapped with [Vite](https://vitejs.dev/)
 
 - npm i
 - npm run dev
+
+## [Live](https://famous-youtiao-49e644.netlify.app/)
